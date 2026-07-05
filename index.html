@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gabriel Njoku — Web Developer & UI Enthusiast</title>
+
+  <!-- Google Fonts: Fraunces (headings) + Inter (body text/UI).
+       preconnect speeds up the font request; the single <link>
+       below loads both font families and their weights in one call. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ============ STICKY TOP NAV ============
+       Two "views" of the same nav live here: a horizontal desktop
+       bar (.nav__inner) and a hidden-by-default mobile overlay
+       (.nav__mobile). CSS media queries decide which is visible;
+       script.js only handles opening/closing the mobile one. -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <!-- Site logo/name — also a link back to the hero (#hero) -->
+      <a href="#hero" class="nav__logo">Gabriel Njoku</a>
+
+      <!-- Desktop nav links: jump to each section by id. Hidden on
+           mobile (see CSS media query) in favor of the hamburger. -->
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#resume">Resume</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Persistent CV download button, desktop only -->
+      <a href="assets/resume.pdf" class="btn btn--filled nav__cta" download>Download CV</a>
+
+      <!-- Hamburger button, shown only below the mobile breakpoint.
+           script.js toggles the .is-open class on #navMobile below. -->
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile full-width menu overlay: same links + CV button as
+         desktop, just laid out for a small touch-friendly panel.
+         Closed by default; script.js adds/removes .is-open on tap. -->
+    <div class="nav__mobile" id="navMobile">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#resume">Resume</a>
+      <a href="#contact">Contact</a>
+      <a href="assets/resume.pdf" class="btn btn--filled" download>Download CV</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============
+         First thing a visitor sees. Two-column layout (text left,
+         photo right) via CSS Grid — see .hero__inner in styles.css
+         for the layout technique and why Grid was chosen over Flex. -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <p class="hero__eyebrow">Web Developer & UI Enthusiast</p>
+          <h1 class="hero__name">Gabriel Njoku</h1>
+          <p class="hero__value-prop">
+            I build fast, accessible web experiences for teams and communities across Nigeria and beyond.
+          </p>
+          <!-- Primary CTAs: download the CV directly, or jump to Projects -->
+          <div class="hero__actions">
+            <a href="assets/resume.pdf" class="btn btn--filled" download>Download Resume</a>
+            <a href="#projects" class="btn btn--outline">View Projects</a>
+          </div>
+        </div>
+
+        <div class="hero__photo-wrap">
+          <img
+            src="assets/gabriel-njoku.jpg"
+            alt="Portrait of Gabriel Njoku"
+            class="hero__photo"
+            width="480"
+            height="600"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============
+         Two bio paragraphs, then a 4-item skills grid (.about__skills)
+         grouped by theme rather than one long flat list — easier to
+         scan than a single paragraph of comma-separated skills. -->
+    <section class="section" id="about">
+      <div class="section__inner">
+        <h2>About</h2>
+        <p class="about__bio">
+          I'm an IT and cloud professional based in Enugu, Nigeria, with a background spanning
+          IT support, multi-cloud engineering, and cybersecurity — alongside hands-on web
+          development work in WordPress, HTML, CSS, and JavaScript. I enjoy picking up complex
+          concepts quickly and finding efficient, practical solutions, whether that's securing
+          infrastructure or building a clean interface from scratch.
+        </p>
+        <p class="about__bio">
+          Day to day, I maintain IT infrastructure and SaaS applications, work across AWS, Azure,
+          and GCP, and support teams with everything from incident response to CI/CD automation.
+          Alongside that, I take on Web Development projects for organizations and events —
+          building websites for non-profits, managing academic websites, and contributing to media and
+          communications work for community initiatives.
+        </p>
+
+        <!-- Skills grouped into 4 themed cards; collapses to a single
+             column on mobile (see .about__skills media query rule). -->
+        <div class="about__skills">
+          <div class="skill-group">
+            <h3>Web Development</h3>
+            <p>WordPress CMS, HTML, CSS, JavaScript</p>
+          </div>
+          <div class="skill-group">
+            <h3>Cloud &amp; DevOps</h3>
+            <p>AWS, Azure, GCP, CI/CD, Infrastructure as Code, Docker, Kubernetes</p>
+          </div>
+          <div class="skill-group">
+            <h3>Cybersecurity</h3>
+            <p>Network Security, Incident Response, Vulnerability Assessment, SIEM/SOAR/EDR</p>
+          </div>
+          <div class="skill-group">
+            <h3>Systems &amp; Languages</h3>
+            <p>Linux/Unix, Node.js, PHP, Python, SQL, MySQL, DynamoDB</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============
+         Card grid — see .project-grid in styles.css for the 2-column
+         (desktop) / 1-column (mobile) grid logic. All 4 cards below
+         follow the same internal structure: image, title, one-line
+         summary, tech tags, then a short design→build→delivery blurb. -->
+     <section class="section" id="projects">
+      <div class="section__inner">
+        <h2>Projects</h2>
+        <p class="section__intro">A few things I've built and maintained recently.</p>
+ 
+        <div class="project-grid">
+ 
+          <!-- Project card #1 — structure below is repeated identically
+               for cards #2–4, just with different content per project. -->
+          <article class="project-card">
+            <!-- Screenshot, cropped to 16:9 via CSS (object-fit: cover) -->
+            <img
+              src="assets/project-mamaputonline.png"
+              alt="MamaPutOnline website homepage"
+              class="project-card__image"
+              width="800"
+              height="450"
+            />
+            <div class="project-card__body">
+              <h3>MamaPutOnline</h3>
+              <!-- One-line "what it solved" -->
+              <p class="project-card__summary">
+                Brought a Nigerian food delivery brand to life with a fast, framework-free
+                interface.
+              </p>
+              <!-- Tech-stack tag pills -->
+              <div class="project-card__tags">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">UI Design</span>
+              </div>
+              <!-- Short process note: design → build → delivery -->
+              <p class="project-card__process">
+                A complete website UI hand-written in HTML and CSS with no frameworks — designed
+                a warm, culturally-grounded system, then built the sticky nav, hero, menu grid,
+                and footer as one fully integrated page.
+              </p>
+            </div>
+          </article>
+ 
+          <article class="project-card">
+            <img
+              src="assets/project-restaurantepeak.png"
+              alt="Restaurante Peak website homepage"
+              class="project-card__image"
+              width="800"
+              height="450"
+            />
+            <div class="project-card__body">
+              <h3>Restaurante Peak</h3>
+              <p class="project-card__summary">
+                Gave a fictitious restaurant brand a polished, multi-page site without leaning on
+                any framework.
+              </p>
+              <div class="project-card__tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">Semantic HTML</span>
+              </div>
+              <p class="project-card__process">
+                A multi-page site built with semantic HTML5 and vanilla CSS3 — planned out page
+                structure and navigation first, then styled everything by hand with no frameworks
+                and no JavaScript dependencies.
+              </p>
+            </div>
+          </article>
+ 
+          <article class="project-card">
+            <img
+              src="assets/project-nexus.png"
+              alt="Nexus Landing Page"
+              class="project-card__image"
+              width="800"
+              height="450"
+            />
+            <div class="project-card__body">
+              <h3>Nexus — Landing Page</h3>
+              <p class="project-card__summary">
+                Turned a UI design mockup into a pixel-close, production-ready landing page.
+              </p>
+              <div class="project-card__tags">
+                <span class="tag">HTML</span>
+                <span class="tag">Tailwind CSS</span>
+              </div>
+              <p class="project-card__process">
+                Built as part of the Enugu Turing Tech Program — took a UI design mockup and
+                reconstructed it using HTML and Tailwind CSS, matching the source design as
+                closely as possible from layout through to final styling.
+              </p>
+            </div>
+          </article>
+ 
+          <article class="project-card">
+            <img
+              src="assets/project-portfolio.png"
+              alt="Personal Portfolio website"
+              class="project-card__image"
+              width="800"
+              height="450"
+            />
+            <div class="project-card__body">
+              <h3>This Personal Portfolio Site</h3>
+              <p class="project-card__summary">
+                The fully responsive, vibe-engineered site you're looking at right now.
+              </p>
+              <div class="project-card__tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS Grid</span>
+                <span class="tag">Flexbox</span>
+                <span class="tag">JavaScript</span>
+              </div>
+              <p class="project-card__process">
+                Designed and built end-to-end with semantic HTML5, CSS Grid and Flexbox for
+                layout, and a touch of JavaScript for interactivity — from sitemap and style
+                guide through to a fully responsive, production-ready build.
+              </p>
+            </div>
+          </article>
+ 
+        </div>
+      </div>
+    </section>
+ 
+
+    <!-- ============ RESUME ============
+         Short on-page summary + highlights list (not the whole CV) so
+         this section reinforces Projects rather than duplicating the
+         PDF. The actual download is the full, ATS-friendly resume.pdf. -->
+    <section class="section" id="resume">
+      <div class="section__inner">
+        <h2>Resume</h2>
+        <p class="section__intro">
+          A summary of my professional background — download the full CV for complete detail.
+        </p>
+
+        <p class="about__bio">
+          Resourceful IT professional with broad technical experience across IT support,
+          multi-cloud engineering, and cybersecurity — quick to grasp complex concepts and
+          skilled at designing efficient, practical solutions.
+        </p>
+
+        <!-- Highlight list: current role, past roles, core skills,
+             certifications, education — not the full resume, just
+             the scannable version of it. -->
+        <ul class="resume-highlights">
+          <li>
+            <strong>IT Administrator</strong> at Outcom Group, Lagos (2019–2026) — maintaining
+            company IT infrastructure, SaaS applications, and advising on IT strategy.
+          </li>
+          <li>
+            <strong>IT Support Specialist</strong> roles at United Global Resources and Completesoft
+            (2007–2016) — software deployment, client training, and on/off-site technical support.
+          </li>
+          <li>
+            <strong>Core skills:</strong> Cloud (AWS, Azure, GCP), DevOps automation, Docker/Kubernetes,
+            Linux/Unix, Cybersecurity (SIEM/SOAR/EDR), and WordPress/HTML/CSS/JavaScript.
+          </li>
+          <li>
+            <strong>Certified:</strong> Google Cloud Associate Cloud Engineer, Microsoft Azure
+            Administrator Associate, Microsoft Security Operations Analyst Associate.
+          </li>
+          <li>
+            <strong>B.Sc. Business Administration</strong> (Second Class Honours, Upper Division),
+            University of Lagos.
+          </li>
+        </ul>
+
+        <!-- Same PDF as the hero/nav download buttons -->
+        <a href="assets/resume.pdf" class="btn btn--filled" download>Download Full Resume (PDF)</a>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============
+         Simple label/value list — no form, just direct contact
+         methods (email, phone, LinkedIn, location). -->
+    <section class="section" id="contact">
+      <div class="section__inner">
+        <h2>Contact</h2>
+        <p class="section__intro">
+          Based in Enugu, Nigeria — open to new roles and project collaborations. Feel free to
+          reach out directly.
+        </p>
+
+        <ul class="contact-list">
+          <li>
+            <span class="contact-list__label">Email</span>
+            <a href="mailto:njokutgabriel@gmail.com">njokutgabriel@gmail.com</a>
+          </li>
+          <li>
+            <span class="contact-list__label">Phone</span>
+            <a href="tel:+2348164513139">+234 816 451 3139</a>
+          </li>
+          <li>
+            <span class="contact-list__label">LinkedIn</span>
+            <a href="https://linkedin.com/in/njokutgabriel" target="_blank" rel="noopener">linkedin.com/in/njokutgabriel</a>
+          </li>
+          <li>
+            <span class="contact-list__label">Location</span>
+            <span>Enugu, Nigeria</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ STICKY FOOTER ============
+       Copyright + social/nav links. See .footer in styles.css for
+       why this uses sticky (not fixed) positioning, same reasoning
+       as the top nav. -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>&copy; 2026 Gabriel Njoku</p>
+      <div class="footer__links">
+        <a href="https://github.com/gabrielnjoku" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/njokutgabriel" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Handles the mobile hamburger open/close behavior only —
+       everything else on this page is static HTML/CSS. -->
+  <script src="js/script.js"></script>
+</body>
+</html>

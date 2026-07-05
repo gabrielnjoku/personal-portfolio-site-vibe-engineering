@@ -1,0 +1,628 @@
+/* =========================================================
+   DESIGN TOKENS
+   Pulled directly from the agreed style guide. Every color
+   and font in this file should trace back to one of these
+   variables — no one-off hex values elsewhere in the sheet.
+   ========================================================= */
+:root {
+  --color-bg: #FAFAF9;          /* page background, off-white */
+  --color-text: #1B2430;        /* primary text, charcoal-navy */
+  --color-text-muted: #5B6472;  /* secondary text, captions/tags */
+  --color-accent: #2E5FE8;      /* single accent: buttons, links, tags */
+  --color-accent-hover: #2450C7;/* darkened accent for hover states */
+  --color-card-bg: #FFFFFF;     /* project cards, one step lighter than page */
+  --color-card-border: #E4E7EC; /* hairline card border */
+
+  --font-heading: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+
+  --nav-height: 72px;
+  --max-width: 1140px;
+  --radius: 8px;
+}
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offsets anchor scrolling so section tops aren't hidden
+     under the sticky nav bar. */
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* Reusable content wrapper — caps line length and centers
+   content on wide viewports. Used inside nav, sections, footer. */
+.section__inner,
+.nav__inner,
+.footer__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* =========================================================
+   BUTTONS
+   Two variants sharing a base .btn class: --filled (solid accent
+   background, used for primary actions like CV downloads) and
+   --outline (accent border/text only, used for secondary actions
+   like "View Projects"). Per the style guide, filled = primary.
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn--filled {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.btn--filled:hover,
+.btn--filled:focus-visible {
+  background-color: var(--color-accent-hover);
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn--outline:hover,
+.btn--outline:focus-visible {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Visible keyboard focus for all interactive elements */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   STICKY TOP NAV
+
+   POSITION/Z-INDEX APPROACH:
+   - `position: sticky; top: 0;` keeps the nav in normal document
+     flow (it still occupies its own space, pushing the hero down
+     below it) until the page scrolls past where it sits — then it
+     "sticks" to the top of the viewport instead of scrolling away.
+     Because it never leaves the flow, there's no overlap to fix:
+     unlike `position: fixed` (which is pulled OUT of flow and
+     requires manual top-padding on whatever's below it to avoid
+     being covered), sticky reserves its own height automatically.
+   - `z-index: 100` ensures the nav renders on top of page content
+     once it starts overlapping visually during scroll (e.g. a
+     project card scrolling underneath it). 100 is intentionally
+     high relative to normal content (z-index: auto/0) but left
+     with headroom below the footer's z-index (below), in case a
+     modal/overlay is ever added later and needs to sit above both.
+   - A solid `background-color` (not transparent) is required for
+     a sticky/fixed nav — otherwise content scrolling underneath
+     would show through it.
+   - `scroll-padding-top: var(--nav-height)` (set on <html> above)
+     is what actually prevents the *anchor-link* overlap problem:
+     without it, clicking a nav link would scroll a section's top
+     edge directly under the sticky nav, hiding it.
+   ========================================================= */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.nav__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Logo/name mark, uses the heading font for brand consistency with hero */
+.nav__logo {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.15rem;
+  white-space: nowrap;
+}
+
+/* Desktop link row — pushed to the right of the logo via margin-left: auto */
+.nav__links {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+  margin-right: 24px;
+  font-weight: 500;
+}
+
+.nav__links a:hover {
+  color: var(--color-accent);
+}
+
+/* Smaller/tighter padding than the standard .btn so it fits comfortably in the nav bar */
+.nav__cta {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+/* Hamburger icon — 3 stacked bars (<span> each). Hidden on desktop,
+   shown below the breakpoint. script.js toggles aria-expanded and
+   the .is-open class on #navMobile when this is clicked. */
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+}
+
+.nav__toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Mobile full-screen overlay menu — hidden (display: none) until
+   script.js adds the .is-open class from the media query below. */
+.nav__mobile {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 24px 24px;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+/* Each mobile link is a large, thumb-friendly tap target with its
+   own divider line, rather than a tight inline list. */
+.nav__mobile a {
+  padding: 14px 4px;
+  font-weight: 500;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.nav__mobile .btn {
+  margin-top: 12px;
+  width: 100%;
+}
+
+/* =========================================================
+   HERO
+   Layout technique: CSS GRID, two columns.
+   Grid (rather than flex) is the right tool here because we
+   want an explicit, named-proportion split between the text
+   column and the photo column that also cleanly collapses to
+   a single stacked column on mobile via one media query —
+   no need to fight flex-basis/flex-grow math on two children.
+   ========================================================= */
+.hero {
+  padding: 64px 0 96px;
+}
+
+.hero__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr; /* text column slightly wider than photo column */
+  align-items: center;
+  gap: 48px;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Flex is used *inside* this grid cell because its children
+     (eyebrow, name, value prop, buttons) are a simple vertical
+     stack — grid would be overkill for a single-axis list. */
+  gap: 20px;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.hero__name {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  color: var(--color-text);
+}
+
+.hero__value-prop {
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+  max-width: 46ch;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.hero__photo-wrap {
+  /* Grid cell sizes itself to the column track; the image inside
+     just needs to fill it while keeping its aspect ratio. */
+  width: 100%;
+}
+
+.hero__photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-card-border);
+}
+
+/* =========================================================
+   SECTION BASE
+   Shared by About/Projects/Resume/Contact: consistent vertical
+   rhythm (padding) and a hairline divider between sections so
+   the page doesn't need individual background changes to signal
+   where one section ends and the next begins.
+   ========================================================= */
+.section {
+  padding: 96px 0;
+  border-top: 1px solid var(--color-card-border);
+}
+
+.section__intro {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  margin-top: 12px;
+  max-width: 60ch;
+}
+
+/* ---------- ABOUT ---------- */
+/* Bio paragraphs — width capped to ~68 characters per line for readability */
+.about__bio {
+  max-width: 68ch;
+  margin-top: 16px;
+  color: var(--color-text);
+}
+
+/* 4 themed skill groups in a 2x2 grid on desktop, single column
+   on mobile (see media query at the bottom of this file) */
+.about__skills {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.skill-group h3 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.skill-group p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* ---------- PROJECTS ----------
+   GRID LOGIC:
+   - `grid-template-columns: repeat(2, 1fr)` creates exactly two
+     equal-width columns on desktop. `repeat(2, 1fr)` is preferred
+     here over something like `auto-fit`/`minmax()` because the
+     brief calls for a fixed 2-column layout, not a fluid count
+     that reflows based on available width — with only 4 cards,
+     an auto-fit approach could produce 3+ columns on very wide
+     screens, which isn't what we want.
+   - The single mobile media query (below, in the responsive block)
+     overrides this to `grid-template-columns: 1fr`, collapsing to
+     a single column. This is the simplest possible mobile
+     transformation: one property changes, everything else
+     (gap, card padding, image sizing) stays identical, so there's
+     no separate "mobile card" component to maintain.
+   - `gap: 24px` handles spacing between cards on both axes in one
+     declaration, rather than manually setting margins on cards
+     (which would need :last-child/:nth-child overrides to avoid
+     doubled-up spacing at row/column edges).
+*/
+.project-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.project-card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius);
+  overflow: hidden; /* clips the image's square corners to match the card's rounded corners */
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card__image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.project-card__body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-card h3 {
+  font-size: 1.15rem;
+}
+
+.project-card__summary {
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.98rem;
+}
+
+.project-card__process {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Tag pill: uses the single accent color for both text and a very
+   light tint of its own background (via color-mix), so tags read
+   as a matched set without introducing a second color to the page. */
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+/* ---------- RESUME ---------- */
+/* Highlight list: list-style is turned off in favor of a custom
+   dot (::before below) so the bullet color matches the accent
+   rather than inheriting the browser's default black marker. */
+.resume-highlights {
+  margin: 24px 0 32px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 68ch;
+}
+
+.resume-highlights li {
+  padding-left: 20px;
+  position: relative;
+  color: var(--color-text-muted);
+}
+
+/* Custom accent-colored bullet dot, positioned absolutely inside
+   the padding-left space reserved on each <li> above */
+.resume-highlights li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+.resume-highlights strong {
+  color: var(--color-text);
+}
+
+/* ---------- CONTACT ---------- */
+/* Each row is a flex pair: a fixed-width label + the value/link,
+   with a divider line between rows instead of a full table/grid. */
+.contact-list {
+  margin-top: 32px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 50ch;
+}
+
+.contact-list li {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-card-border);
+  padding-bottom: 14px;
+}
+
+/* Fixed min-width keeps every value (email, phone, etc.) starting
+   at the same horizontal position regardless of label length */
+.contact-list__label {
+  min-width: 90px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.contact-list a:hover {
+  color: var(--color-accent);
+}
+
+/* =========================================================
+   STICKY FOOTER
+
+   POSITION/Z-INDEX APPROACH:
+   - `position: sticky; bottom: 0;` mirrors the nav's logic: the
+     footer stays in normal flow at the end of <main>'s content,
+     then sticks to the bottom of the viewport once the page has
+     scrolled far enough that its natural position would otherwise
+     scroll off-screen. Because it's sticky (not fixed), it can
+     never cover content that hasn't finished rendering above it —
+     it only ever sits flush against the bottom of the viewport
+     for as long as there's still page content above it in flow.
+   - No explicit z-index is set here (defaults to auto/0). It
+     doesn't need one: the footer is the last element in the
+     document, so nothing below it in paint order will overlap it
+     the way a scrolling project card could overlap the nav. If a
+     future element (e.g. a toast/notification) needs to render
+     above it, give that element a z-index greater than the nav's
+     100 to guarantee correct stacking against both bars.
+   - A solid `background-color` again prevents content from
+     showing through as it scrolls behind the sticky footer.
+   ========================================================= */
+.footer {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--color-bg);
+  border-top: 1px solid var(--color-card-border);
+}
+
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.footer__links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer__links a:hover {
+  color: var(--color-accent);
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE (max-width: 768px)
+   Single breakpoint controlling: hero stacking, nav → hamburger,
+   About/Projects grids collapsing to 1 column, and the footer
+   switching from sticky to static. Grouped here in one query
+   rather than scattered throughout, so all mobile overrides for
+   the whole page are visible in one place.
+   ========================================================= */
+@media (max-width: 768px) {
+  /* Hero collapses from 2-column grid to a single stacked
+     column — photo moves below the text. */
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__photo-wrap {
+    order: -1; /* photo first on mobile for immediate visual impact */
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .hero__text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__value-prop {
+    max-width: none;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  /* Nav: hide desktop links + CTA, show hamburger */
+  .nav__links,
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  /* Overlay menu shown only when JS toggles this class on <body> or the menu itself */
+  .nav__mobile.is-open {
+    display: flex;
+  }
+
+  .about__skills,
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer becomes non-sticky on mobile so it doesn't eat into
+     already-scarce viewport height (address bar, keyboard, etc).
+     `position: static` fully removes it from sticky behavior —
+     it scrolls away normally like any other block, which is the
+     agreed mobile tradeoff from our earlier nav/footer discussion. */
+  .footer {
+    position: static;
+  }
+}
