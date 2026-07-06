@@ -29,7 +29,7 @@ text color, accent color, heading font, body font, and card
 background/border colors.
 ```
 **Engineering notes:**
-- This prompt exists specifically to override the dark theme carried over from an earlier project — I stated the constraint ("no dark backgrounds anywhere") explicitly rather than trusting the model to infer it.
+- This prompt exists specifically to prevent the typical dark theme usually defaulted to by the model — I stated the constraint ("no dark backgrounds anywhere") explicitly rather than trusting the model to infer it.
 - Swapped the model's first font suggestion for the **Fraunces / Inter** pairing by hand — Fraunces for headings gives the hero some personality without leaning corporate, Inter keeps body text and skill tags legible at small sizes.
 - Added the `<link rel="preconnect">` before the Google Fonts stylesheet myself; the model's first pass only included the stylesheet link, which is a minor but real performance miss.
 
